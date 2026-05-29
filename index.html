@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Структура номенклатурной позиции — VienShop</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300..700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root,[data-theme="light"]{
+  --color-bg:#f7f6f2;--color-surface:#f9f8f5;--color-surface-2:#fbfbf9;
+  --color-surface-offset:#f0ede8;--color-divider:#dcd9d5;--color-border:#d4d1ca;
+  --color-text:#28251d;--color-text-muted:#7a7974;--color-text-faint:#bab9b4;
+  --color-primary:#01696f;--color-primary-hover:#0c4e54;--color-primary-highlight:#cedcd8;
+  --color-orange:#da7101;--color-orange-highlight:#f5e8d6;
+  --color-gold:#d19900;--color-gold-highlight:#f5edcb;
+  --color-blue:#006494;--color-blue-highlight:#cde0ed;
+  --color-success:#437a22;--color-success-highlight:#d4dfcc;
+  --color-text-inverse:#f9f8f4;
+  --font-body:'Inter','Segoe UI',sans-serif;--font-mono:'JetBrains Mono',monospace;
+  --text-xs:clamp(0.75rem,0.7rem + 0.25vw,0.875rem);
+  --text-sm:clamp(0.875rem,0.8rem + 0.35vw,1rem);
+  --text-base:clamp(1rem,0.95rem + 0.25vw,1.125rem);
+  --text-lg:clamp(1.125rem,1rem + 0.75vw,1.5rem);
+  --text-xl:clamp(1.5rem,1.2rem + 1.25vw,2.25rem);
+  --text-2xl:clamp(2rem,1.2rem + 2.5vw,3.5rem);
+  --space-1:0.25rem;--space-2:0.5rem;--space-3:0.75rem;--space-4:1rem;
+  --space-5:1.25rem;--space-6:1.5rem;--space-8:2rem;--space-10:2.5rem;
+  --space-12:3rem;--space-16:4rem;
+  --radius-sm:0.375rem;--radius-md:0.5rem;--radius-lg:0.75rem;
+  --radius-xl:1rem;--radius-full:9999px;
+  --shadow-sm:0 1px 2px rgba(40,37,29,0.06);
+  --shadow-md:0 4px 12px rgba(40,37,29,0.09);
+  --shadow-lg:0 12px 32px rgba(40,37,29,0.13);
+  --transition:180ms cubic-bezier(0.16,1,0.3,1);
+}
+[data-theme="dark"]{
+  --color-bg:#171614;--color-surface:#1c1b19;--color-surface-2:#201f1d;
+  --color-surface-offset:#22211f;--color-divider:#262523;--color-border:#393836;
+  --color-text:#cdccca;--color-text-muted:#797876;--color-text-faint:#5a5957;
+  --color-text-inverse:#2b2a28;
+  --color-primary:#4f98a3;--color-primary-hover:#227f8b;--color-primary-highlight:#1e3435;
+  --color-orange:#fdab43;--color-orange-highlight:#3a2e1e;
+  --color-gold:#e8af34;--color-gold-highlight:#2f2510;
+  --color-blue:#5591c7;--color-blue-highlight:#1a2535;
+  --color-success:#6daa45;--color-success-highlight:#1e2e16;
+  --shadow-sm:0 1px 2px rgba(0,0,0,0.2);
+  --shadow-md:0 4px 12px rgba(0,0,0,0.3);
+  --shadow-lg:0 12px 32px rgba(0,0,0,0.4);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;scroll-behavior:smooth}
+body{min-height:100dvh;line-height:1.6;font-family:var(--font-body);font-size:var(--text-base);color:var(--color-text);background:var(--color-bg)}
+img,svg{display:block;max-width:100%}
+h1,h2,h3{text-wrap:balance;line-height:1.2}
+p{text-wrap:pretty}
+button{cursor:pointer;background:none;border:none;font:inherit;color:inherit}
+.wrap{max-width:1100px;margin-inline:auto;padding:var(--space-8) var(--space-6)}
+.hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-10);flex-wrap:wrap;gap:var(--space-4)}
+.logo{display:flex;align-items:center;gap:var(--space-3)}
+.toggle{display:flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:var(--radius-full);background:var(--color-surface);border:1px solid var(--color-border);color:var(--color-text-muted);transition:all var(--transition)}
+.toggle:hover{color:var(--color-primary);border-color:var(--color-primary)}
+.hero{text-align:center;padding:var(--space-8) 0 var(--space-12)}
+.eyebrow{font-size:var(--text-xs);font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--color-primary);margin-bottom:var(--space-3)}
+.h1{font-size:var(--text-2xl);font-weight:700;margin-bottom:var(--space-4)}
+.sub{font-size:var(--text-base);color:var(--color-text-muted);max-width:60ch;margin-inline:auto;line-height:1.7}
+.lbl{font-size:var(--text-xs);font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--color-text-muted);margin-bottom:var(--space-2)}
+.sec-title{font-size:var(--text-lg);font-weight:700;margin-bottom:var(--space-6)}
+.schema-box{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);box-shadow:var(--shadow-lg);padding:var(--space-8);margin-bottom:var(--space-10)}
+.lvl1{background:var(--color-primary-highlight);border:2px solid var(--color-primary);border-radius:var(--radius-lg);padding:var(--space-5) var(--space-6);margin-bottom:var(--space-8);display:flex;align-items:center;gap:var(--space-5);flex-wrap:wrap}
+.lvl1-icon{width:48px;height:48px;background:var(--color-primary);border-radius:var(--radius-lg);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.lvl1-info{flex:1;min-width:200px}
+.lvl1-lbl{font-size:var(--text-xs);font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--color-primary);margin-bottom:var(--space-1)}
+.lvl1-name{font-size:var(--text-lg);font-weight:700;margin-bottom:var(--space-1)}
+.lvl1-desc{font-size:var(--text-sm);color:var(--color-text-muted)}
+.cols{display:grid;grid-template-columns:1fr 1fr 1fr;gap:var(--space-4)}
+@media(max-width:700px){.cols{grid-template-columns:1fr}}
+.card{border-radius:var(--radius-lg);border:1.5px solid;overflow:hidden;box-shadow:var(--shadow-sm);transition:box-shadow var(--transition),transform var(--transition)}
+.card:hover{box-shadow:var(--shadow-md);transform:translateY(-2px)}
+.ch{display:flex;align-items:center;gap:var(--space-3);padding:var(--space-4) var(--space-5)}
+.c-icon{width:36px;height:36px;border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.c-num{font-size:var(--text-xs);font-weight:700;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:2px}
+.c-title{font-size:var(--text-sm);font-weight:700}
+.cb{padding:var(--space-4) var(--space-5);background:var(--color-surface-2)}
+.cdesc{font-size:var(--text-sm);color:var(--color-text-muted);margin-bottom:var(--space-3);line-height:1.6}
+.chips{display:flex;flex-wrap:wrap;gap:var(--space-2)}
+.chip{display:inline-flex;align-items:center;padding:3px 10px;border-radius:var(--radius-full);font-size:var(--text-xs);font-weight:600;font-family:var(--font-mono)}
+.flist{list-style:none;display:flex;flex-direction:column;gap:var(--space-2)}
+.fi{display:flex;align-items:flex-start;gap:var(--space-3);padding:var(--space-2) var(--space-3);background:var(--color-surface);border-radius:var(--radius-md);border:1px solid var(--color-divider)}
+.fdot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:6px}
+.ft{font-size:var(--text-sm);flex:1}
+.ft strong{font-weight:600}
+.ft span{color:var(--color-text-muted);font-size:var(--text-xs)}
+/* orange */
+.o{border-color:var(--color-orange)}.o .ch{background:var(--color-orange-highlight)}.o .c-num,.o .c-title{color:var(--color-orange)}.o .c-icon{background:var(--color-orange)}
+.co{background:var(--color-orange-highlight);color:var(--color-orange)}
+/* green */
+.g{border-color:var(--color-primary)}.g .ch{background:var(--color-primary-highlight)}.g .c-num,.g .c-title{color:var(--color-primary)}.g .c-icon{background:var(--color-primary)}
+.cg{background:var(--color-primary-highlight);color:var(--color-primary)}
+/* blue */
+.b{border-color:var(--color-blue)}.b .ch{background:var(--color-blue-highlight)}.b .c-num,.b .c-title{color:var(--color-blue)}.b .c-icon{background:var(--color-blue)}
+.cb2{background:var(--color-blue-highlight);color:var(--color-blue)}
+/* gold */
+.cgold{background:var(--color-gold-highlight);color:var(--color-gold)}
+.callout{display:flex;gap:var(--space-4);align-items:flex-start;background:var(--color-primary-highlight);border:1.5px solid var(--color-primary);border-radius:var(--radius-lg);padding:var(--space-5) var(--space-6);margin-top:var(--space-6);margin-bottom:var(--space-10)}
+.c-ico{width:32px;height:32px;background:var(--color-primary);border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.c-bdy .c-tit{font-size:var(--text-sm);font-weight:700;color:var(--color-primary);margin-bottom:var(--space-1)}
+.c-bdy p{font-size:var(--text-sm);color:var(--color-text-muted);line-height:1.6}
+.tbl-box{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);margin-bottom:var(--space-10);overflow:hidden}
+.tbl-hdr{padding:var(--space-5) var(--space-6);border-bottom:1px solid var(--color-divider)}
+.tbl-body{padding:var(--space-6);overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:var(--text-sm);font-family:var(--font-mono)}
+th{padding:var(--space-2) var(--space-3);text-align:left;font-size:var(--text-xs);font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--color-text-muted);background:var(--color-surface-offset);border-bottom:1px solid var(--color-border)}
+td{padding:var(--space-2) var(--space-3);border-bottom:1px solid var(--color-divider);vertical-align:top}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:var(--color-surface-offset)}
+.tn{font-weight:600;color:var(--color-primary)}
+.tc{color:var(--color-orange)}
+.ts{color:var(--color-blue)}
+.ta{color:var(--color-gold)}
+.tb{font-size:var(--text-xs);color:var(--color-text-faint)}
+.qgrid{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-5);margin-bottom:var(--space-10)}
+@media(max-width:650px){.qgrid{grid-template-columns:1fr}}
+.qcard{background:var(--color-surface);border:1.5px solid var(--color-border);border-radius:var(--radius-lg);padding:var(--space-5)}
+.qn{font-size:var(--text-xs);font-weight:700;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:var(--space-2)}
+.qt{font-size:var(--text-sm);font-weight:600;line-height:1.5;margin-bottom:var(--space-3)}
+.qa{font-size:var(--text-sm);color:var(--color-text-muted);line-height:1.6}
+.qcard.yes{border-color:var(--color-success)}.qcard.yes .qn{color:var(--color-success)}
+.qcard.maybe{border-color:var(--color-gold)}.qcard.maybe .qn{color:var(--color-gold)}
+.legend{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-lg);padding:var(--space-5) var(--space-6);margin-bottom:var(--space-10)}
+.legend-t{font-size:var(--text-sm);font-weight:700;margin-bottom:var(--space-4)}
+.legend-r{display:flex;flex-wrap:wrap;gap:var(--space-4)}
+.li{display:flex;align-items:center;gap:var(--space-2);font-size:var(--text-xs);color:var(--color-text-muted)}
+.ld{width:12px;height:12px;border-radius:50%;flex-shrink:0}
+footer{text-align:center;padding:var(--space-8) 0 var(--space-6);color:var(--color-text-faint);font-size:var(--text-xs)}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="hdr">
+  <div class="logo">
+    <svg width="40" height="40" viewBox="0 0 40 40" fill="none" aria-label="VienShop">
+      <rect width="40" height="40" rx="10" fill="var(--color-primary)"/>
+      <path d="M8 12 L16 28 L20 20 L24 28 L32 12" stroke="var(--color-text-inverse)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      <circle cx="20" cy="8" r="3" fill="var(--color-gold)"/>
+    </svg>
+    <div>
+      <div style="font-weight:700;font-size:var(--text-sm)">VienShop</div>
+      <div style="font-size:var(--text-xs);color:var(--color-text-muted)">1С УТ 10.3 → 11.5</div>
+    </div>
+  </div>
+  <button class="toggle" id="themeBtn" aria-label="Переключить тему">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+  </button>
+</header>
+
+<section class="hero">
+  <div class="eyebrow">Перенос данных · Консолидация номенклатуры</div>
+  <h1 class="h1">Структура номенклатурной позиции</h1>
+  <p class="sub">Из чего состоит единица номенклатуры в новой системе УТ&nbsp;11.5 — простое объяснение для всех участников проекта</p>
+</section>
+
+<div class="schema-box">
+  <div class="lbl">Схема · 3 уровня</div>
+  <div class="sec-title">Иерархия элементов номенклатуры</div>
+
+  <div class="lvl1">
+    <div class="lvl1-icon">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M9 9h6M9 12h6M9 15h4"/></svg>
+    </div>
+    <div class="lvl1-info">
+      <div class="lvl1-lbl">Уровень 1 · Номенклатурная позиция</div>
+      <div class="lvl1-name">Например: AMAZONKA VIEN</div>
+      <div class="lvl1-desc">Название модели / изделия — общее для всех цветов и размеров. Один и тот же халат, разные варианты.</div>
+    </div>
+    <div class="chips">
+      <span class="chip cg">AMAZONKA VIEN</span>
+      <span class="chip cg">MONTE CARLO</span>
+      <span class="chip cg">MONACO</span>
+      <span class="chip cg">LADY</span>
+    </div>
+  </div>
+
+  <svg style="display:block;margin:0 auto;width:100%;max-width:600px" height="32" viewBox="0 0 600 32">
+    <line x1="100" y1="2" x2="100" y2="26" stroke="var(--color-border)" stroke-width="2"/>
+    <line x1="300" y1="2" x2="300" y2="26" stroke="var(--color-border)" stroke-width="2"/>
+    <line x1="500" y1="2" x2="500" y2="26" stroke="var(--color-border)" stroke-width="2"/>
+    <polygon points="96,22 100,30 104,22" fill="var(--color-border)"/>
+    <polygon points="296,22 300,30 304,22" fill="var(--color-border)"/>
+    <polygon points="496,22 500,30 504,22" fill="var(--color-border)"/>
+  </svg>
+
+  <div class="cols">
+    <div class="card o">
+      <div class="ch">
+        <div class="c-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></div>
+        <div><div class="c-num">Уровень 2-А</div><div class="c-title">Характеристика</div></div>
+      </div>
+      <div class="cb">
+        <p class="cdesc">Конкретный вариант: цвет + размер. Однозначно уточняет позицию до единственного SKU.</p>
+        <ul class="flist">
+          <li class="fi"><span class="fdot" style="background:var(--color-orange)"></span><div class="ft"><strong>Цвет</strong><span> — Petrol, антрацит, Latte, Grey…</span></div></li>
+          <li class="fi"><span class="fdot" style="background:var(--color-blue)"></span><div class="ft"><strong>Размер</strong><span> — S, M, L/XL, 2XL, 3XL, 4XL…</span></div></li>
+        </ul>
+        <div class="chips" style="margin-top:var(--space-3)">
+          <span class="chip co">Petrol, S</span>
+          <span class="chip co">антрацит, 2XL</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card g">
+      <div class="ch">
+        <div class="c-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg></div>
+        <div><div class="c-num">Уровень 2-Б</div><div class="c-title">Поле «Артикул»</div></div>
+      </div>
+      <div class="cb">
+        <p class="cdesc">Отдельный реквизит карточки варианта товара. Артикул не включается в название и не считается характеристикой; он хранится отдельно только как служебный код.</p>
+        <ul class="flist">
+          <li class="fi"><span class="fdot" style="background:var(--color-primary)"></span><div class="ft"><strong>Уникален</strong><span> — один артикул = одна позиция+цвет+размер</span></div></li>
+          <li class="fi"><span class="fdot" style="background:var(--color-primary)"></span><div class="ft"><strong>Удобен для поиска</strong><span> — фильтры, ЧЗ, отчёты</span></div></li>
+        </ul>
+        <div class="chips" style="margin-top:var(--space-3)">
+          <span class="chip cg">1175/79</span>
+          <span class="chip cg">431/10</span>
+          <span class="chip cg">603/27</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card b">
+      <div class="ch">
+        <div class="c-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5v14M8 5v14M12 5v14M17 5v14M21 5v14"/></svg></div>
+        <div><div class="c-num">Уровень 2-В</div><div class="c-title">Штрихкод(ы)</div></div>
+      </div>
+      <div class="cb">
+        <p class="cdesc">Один или несколько штрихкодов на характеристику. По любому — однозначная идентификация SKU.</p>
+        <ul class="flist">
+          <li class="fi"><span class="fdot" style="background:var(--color-blue)"></span><div class="ft"><strong>Несколько на одну хар-ку</strong><span> — старый ШК + новый ЧЗ код</span></div></li>
+          <li class="fi"><span class="fdot" style="background:var(--color-blue)"></span><div class="ft"><strong>Сверка заказа</strong><span> — сканирование → 100% идентификация</span></div></li>
+        </ul>
+        <div class="chips" style="margin-top:var(--space-3)">
+          <span class="chip cb2">ЧЗ-код</span>
+          <span class="chip cb2">Старый ШК</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="callout">
+  <div class="c-ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+  <div class="c-bdy">
+    <div class="c-tit">Правило уникальности — ключ к устранению задвоений</div>
+    <p>Комбинация <strong>«Позиция + Характеристика (цвет + размер)»</strong> однозначно идентифицирует конкретный SKU. Любой штрихкод ведёт в одну карточку — задвоений нет. Артикул не входит в состав характеристики и используется отдельно как дополнительный реквизит.</p>
+  </div>
+</div>
+
+<div class="tbl-box">
+  <div class="tbl-hdr">
+    <div class="lbl">Реальные данные из УТ 10.3</div>
+    <div class="sec-title" style="margin-bottom:0">Плоское отображение → структура в УТ 11.5</div>
+  </div>
+  <div class="tbl-body">
+    <table>
+      <thead>
+        <tr>
+          <th>Номенклатурная позиция</th>
+          <th>Цвет (хар-ка)</th>
+          <th>Размер (хар-ка)</th>
+          <th>Артикул (отдельно)</th>
+          <th>Штрихкод(ы)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="tn">AMAZONKA VIEN</td><td class="tc">Petrol</td><td class="ts">S</td><td class="ta">1175/79</td><td class="tb">460ХХХХ…</td></tr>
+        <tr><td class="tn">AMAZONKA VIEN</td><td class="tc">Petrol</td><td class="ts">M</td><td class="ta">1175/80</td><td class="tb">460ХХХХ…</td></tr>
+        <tr><td class="tn">MONTE CARLO</td><td class="tc">антрацит</td><td class="ts">2XL</td><td class="ta">431/10</td><td class="tb">460ХХХХ…</td></tr>
+        <tr><td class="tn">MONTE CARLO</td><td class="tc">антрацит</td><td class="ts">3XL</td><td class="ta">431/11</td><td class="tb">460ХХХХ…</td></tr>
+        <tr><td class="tn">MONTE CARLO</td><td class="tc">серый</td><td class="ts">4XL</td><td class="ta">431/40</td><td class="tb">460ХХХХ…</td></tr>
+        <tr><td class="tn">MONTE CARLO</td><td class="tc">Джинс</td><td class="ts">L/XL</td><td class="ta">431/5</td><td class="tb">460ХХХХ…</td></tr>
+        <tr><td class="tn">MONACO</td><td class="tc">Капучино</td><td class="ts">S</td><td class="ta">603/27</td><td class="tb">460ХХХХ…</td></tr>
+        <tr><td class="tn">MONACO</td><td class="tc">Латте</td><td class="ts">M</td><td class="ta">603/48</td><td class="tb">460ХХХХ…</td></tr>
+        <tr><td class="tn">TRENDY VIEN</td><td class="tc">Latte</td><td class="ts">2XL</td><td class="ta">1003/48</td><td class="tb">460ХХХХ…</td></tr>
+        <tr><td class="tn">LADY</td><td class="tc">Sliva</td><td class="ts">S</td><td class="ta">696/13</td><td class="tb">460ХХХХ…</td></tr>
+        <tr><td class="tn">LADY</td><td class="tc">pistachio</td><td class="ts">2XL</td><td class="ta">696/56</td><td class="tb">460ХХХХ…</td></tr>
+        <tr><td class="tn">ARMAN VIEN</td><td class="tc">1914/1</td><td class="ts">4XL</td><td class="ta">1023/49</td><td class="tb">460ХХХХ…</td></tr>
+        <tr><td class="tn">OLIVER VIEN</td><td class="tc">Grey</td><td class="ts">2XL</td><td class="ta">1039/40</td><td class="tb">460ХХХХ…</td></tr>
+        <tr><td class="tn">MADONNA шалька VIEN</td><td class="tc">Old rose</td><td class="ts">L/XL</td><td class="ta">1018/92</td><td class="tb">460ХХХХ…</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="lbl" style="margin-bottom:var(--space-2)">Открытые вопросы</div>
+<div class="sec-title" style="margin-bottom:var(--space-6)">Ответы на ключевые вопросы по номенклатуре</div>
+<div class="qgrid">
+  <div class="qcard yes">
+    <div class="qn">Вопрос 1 ✓ Рекомендация</div>
+    <div class="qt">Нужен ли артикул в составе характеристики?</div>
+    <div class="qa"><strong>Нет, не нужен.</strong> Характеристика = только «Цвет, Размер» (например, Petrol, S). Артикул не включается ни в наименование, ни в набор характеристик; его лучше хранить отдельно как реквизит для поиска, отчётов и сопоставления.<br><br><em>Что теряем:</em> только визуальное дублирование — ничего функционального.</div>
+  </div>
+  <div class="qcard maybe">
+    <div class="qn">Вопрос 2 ≈ Уточнить у бухгалтерии</div>
+    <div class="qt">В БП: выгружать товары с характеристиками или без?</div>
+    <div class="qa">• Нужен только общий остаток → <strong>без характеристик</strong> (одна карточка на модель).<br><br>• Нужна аналитика по SKU → <strong>с характеристиками</strong>.<br><br>ВОПРОС: нужна ли детализация по цвету/размеру или достаточно уровня «модель»?</div>
+  </div>
+</div>
+
+<div class="legend">
+  <div class="legend-t">Обозначения</div>
+  <div class="legend-r">
+    <div class="li"><span class="ld" style="background:var(--color-primary)"></span>Номенклатурная позиция</div>
+    <div class="li"><span class="ld" style="background:var(--color-orange)"></span>Цвет (часть характеристики)</div>
+    <div class="li"><span class="ld" style="background:var(--color-blue)"></span>Размер (часть характеристики)</div>
+    <div class="li"><span class="ld" style="background:var(--color-gold)"></span>Поле «Артикул»</div>
+    <div class="li"><span class="ld" style="background:var(--color-text-faint)"></span>Штрихкод</div>
+  </div>
+</div>
+
+<footer>VienShop · Проект переноса данных 1С УТ 10.3 → 11.5 · Схема номенклатуры</footer>
+</div>
+<script>
+(function(){
+  var btn=document.getElementById("themeBtn"),html=document.documentElement;
+  var dark=matchMedia("(prefers-color-scheme:dark)").matches;
+  html.setAttribute("data-theme",dark?"dark":"light");
+  btn.addEventListener("click",function(){
+    dark=!dark;html.setAttribute("data-theme",dark?"dark":"light");
+    btn.innerHTML=dark
+      ? '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>'
+      : '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+  });
+})();
+</script>
+</body>
+</html>
