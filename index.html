@@ -128,7 +128,8 @@ tr:hover td{background:var(--color-surface-offset)}
 .qa{font-size:var(--text-sm);color:var(--color-text-muted);line-height:1.6}
 .qcard.yes{border-color:var(--color-success)}.qcard.yes .qn{color:var(--color-success)}
 .qcard.maybe{border-color:var(--color-gold)}.qcard.maybe .qn{color:var(--color-gold)}
-.qcard.maybe{border-color:var(--color-blue)}.qcard.no .qn{color:var(--color-blue)}
+.qcard.no{border-color:var(--color-blue)}.qcard.no .qn{color:var(--color-orange)}
+.qcard.scope{border-color:var(--color-orange)}.qcard.scope .qn{color:var(--color-black)}
 .legend{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-lg);padding:var(--space-5) var(--space-6);margin-bottom:var(--space-10)}
 .legend-t{font-size:var(--text-sm);font-weight:700;margin-bottom:var(--space-4)}
 .legend-r{display:flex;flex-wrap:wrap;gap:var(--space-4)}
@@ -308,9 +309,15 @@ footer{text-align:center;padding:var(--space-8) 0 var(--space-6);color:var(--col
     <div class="qa">• Нужен только общий остаток → <strong>без характеристик</strong> (одна карточка на модель).<br><br>• Нужна аналитика по SKU → <strong>с характеристиками</strong>.<br><br>ВОПРОС: нужна ли детализация по цвету/размеру или достаточно уровня «модель»?</div>
   </div>
   <div class="qcard no">
-    <div class="qn">Вопрос 3 </div>
+    <div class="qn">Вопрос 3: разбивка по качеству товара </div>
     <div class="qt">Вы используете разбивку товара по качеству (новый/ОТ)?</div>
     <div class="qa">В базе УТ 10.3 сделана разбивка по качеству <strong>ВОПРОС: она нужна?</strong> </div>
+  </div>
+  <div class="qcard scope">
+    <div class="qn">Вопрос 4: ограничивающие условия </div>
+    <div class="qt">• Не выгружать товары без движений <strong> последние 3 года</strong>? А те, которые есть на остатках?</div>
+    <div class="qt">• Не выгружать <strong>старые цены</strong> (старше 3х лет)? </div>
+    <div class="qt">• Не выгружать отрицательные остатки <strong>на складе и на комиссии</strong>? (их много – может, сначала нормализуете базу)? </div>
   </div>
 </div>
 
